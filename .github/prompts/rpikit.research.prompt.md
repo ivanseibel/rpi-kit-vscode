@@ -1,3 +1,9 @@
+````prompt
+# RPI Research Prompt
+
+**Input:** Natural-language project request (scope, goals, constraints, target repo/project name)
+
+# RPI Research Prompt
 # RPI Research Prompt
 
 Phase: research
@@ -32,3 +38,5 @@ Your job (Research phase):
 If the user did NOT include a project name or a `research.md` path, ask a single clarifying question that requests the project name or the path where the research artifact should be written.
 
 Do NOT start Plan or Implementation tasks. Stop after producing `research.md` or asking the clarifying question.
+
+````

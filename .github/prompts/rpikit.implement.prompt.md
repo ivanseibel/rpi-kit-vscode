@@ -1,3 +1,8 @@
+````prompt
+# RPI Implement Prompt
+
+**Input:** `.rpi/projects/<project-id>/plan.md`
+
 # RPI Implement Prompt
 
 Phase: implement
@@ -24,3 +29,5 @@ Your job (Implementation phase):
 4. When Implementation is complete for the project scope, create `.rpi/<project>/SIGNOFF` that references the completed `plan.md` and any verification results.
 
 If you encounter an execution blocker that cannot be resolved within Implementation, stop and follow the Recursion Protocol: document the blocker and recurse to Plan or Research as appropriate.
+
+````

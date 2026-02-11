@@ -10,15 +10,9 @@ This inventory enumerates the required RPI workflow artifacts and their dependen
 
 ## Prompt Entry Points
 
-- .github/prompts/implement.prompt.md
-- .github/prompts/plan.prompt.md
-- .github/prompts/research.prompt.md
-
-## RPI Kit Reusable Prompts
-
-- .github/prompts/rpikit.research
-- .github/prompts/rpikit.plan
-- .github/prompts/rpikit.implement
+- .github/prompts/rpikit.implement.prompt.md
+- .github/prompts/rpikit.plan.prompt.md
+- .github/prompts/rpikit.research.prompt.md
 
 ## Skills (with all subfolders)
 

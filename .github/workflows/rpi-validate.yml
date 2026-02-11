@@ -96,17 +96,17 @@ jobs:
           echo "Checking prompt files..."
           test -d .github/prompts || { echo "❌ Missing prompts directory"; exit 1; }
 
-          # Research prompt
-          test -f .github/prompts/research.prompt.md || { echo "❌ Missing research.prompt.md"; exit 1; }
-          grep -q "Input:" .github/prompts/research.prompt.md || { echo "❌ Missing Input: line in research prompt"; exit 1; }
+          # rpikit.research prompt
+          test -f .github/prompts/rpikit.research.prompt.md || { echo "❌ Missing rpikit.research.prompt.md"; exit 1; }
+          grep -q "Input:" .github/prompts/rpikit.research.prompt.md || { echo "❌ Missing Input: line in rpikit.research prompt"; exit 1; }
 
-          # Plan prompt
-          test -f .github/prompts/plan.prompt.md || { echo "❌ Missing plan.prompt.md"; exit 1; }
-          grep -q "Input:" .github/prompts/plan.prompt.md || { echo "❌ Missing Input: line in plan prompt"; exit 1; }
+          # rpikit.plan prompt
+          test -f .github/prompts/rpikit.plan.prompt.md || { echo "❌ Missing rpikit.plan.prompt.md"; exit 1; }
+          grep -q "Input:" .github/prompts/rpikit.plan.prompt.md || { echo "❌ Missing Input: line in rpikit.plan prompt"; exit 1; }
 
-          # Implement prompt
-          test -f .github/prompts/implement.prompt.md || { echo "❌ Missing implement.prompt.md"; exit 1; }
-          grep -q "Input:" .github/prompts/implement.prompt.md || { echo "❌ Missing Input: line in implement prompt"; exit 1; }
+          # rpikit.implement prompt
+          test -f .github/prompts/rpikit.implement.prompt.md || { echo "❌ Missing rpikit.implement.prompt.md"; exit 1; }
+          grep -q "Input:" .github/prompts/rpikit.implement.prompt.md || { echo "❌ Missing Input: line in rpikit.implement prompt"; exit 1; }
 
           echo "✅ Prompt entry points valid"
 

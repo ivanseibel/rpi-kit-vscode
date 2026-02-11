@@ -1,3 +1,8 @@
+````prompt
+# RPI Plan Prompt
+
+**Input:** `.rpi/projects/<project-id>/research.md`
+
 # RPI Plan Prompt
 
 Phase: plan
@@ -27,3 +32,5 @@ Your job (Plan phase):
 3. Validate FACTS criteria: Plan items must be Feasible, Atomic, Clear, Testable, and Scoped.
 
 Do NOT begin Implementation. Stop after producing `plan.md` or asking for the missing `research.md`/project info.
+
+````

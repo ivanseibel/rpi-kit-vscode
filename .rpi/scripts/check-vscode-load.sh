@@ -105,9 +105,9 @@ check_file ".rpi/AGENTS.md"
 
 # Prompts
 check_dir ".github/prompts"
-check_file ".github/prompts/research.prompt.md"
-check_file ".github/prompts/plan.prompt.md"
-check_file ".github/prompts/implement.prompt.md"
+check_file ".github/prompts/rpikit.research.prompt.md"
+check_file ".github/prompts/rpikit.plan.prompt.md"
+check_file ".github/prompts/rpikit.implement.prompt.md"
 
 # VS Code settings
 check_file ".vscode/settings.json"

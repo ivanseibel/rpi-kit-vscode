@@ -26,16 +26,16 @@ Note: There is no automatic hook to create project directories; running the scaf
 
 All RPI artifacts are repository-backed and version controlled:
 
-| Artifact            | Path                                       | Purpose                                             |
-| ------------------- | ------------------------------------------ | --------------------------------------------------- |
-| Global Instructions | `.github/copilot-instructions.md`          | Repository-wide RPI constitution                    |
-| Scoped Instructions | `.github/instructions/*.instructions.md`   | Phase-specific constraints (Research, Plan)         |
-| Skills              | `.github/skills/rpi-workflow/`             | RPI workflow helper skill with templates and guides |
-| Governance          | `AGENTS.md`, `.rpi/AGENTS.md`              | Agent roles, handoff rules, recursion protocol      |
-| Prompt Entry Points | `.github/prompts/*.prompt.md`              | Phase invocation templates                          |
-| CI Validation       | `.github/workflows/rpi-validate.yml`       | Automated artifact structure checks                 |
+| Artifact            | Path                                                | Purpose                                             |
+| ------------------- | --------------------------------------------------- | --------------------------------------------------- |
+| Global Instructions | `.github/copilot-instructions.md`                   | Repository-wide RPI constitution                    |
+| Scoped Instructions | `.github/instructions/*.instructions.md`            | Phase-specific constraints (Research, Plan)         |
+| Skills              | `.github/skills/rpi-workflow/`                      | RPI workflow helper skill with templates and guides |
+| Governance          | `AGENTS.md`, `.rpi/AGENTS.md`                       | Agent roles, handoff rules, recursion protocol      |
+| Prompt Entry Points | `.github/prompts/*.prompt.md`                       | Phase invocation templates                          |
+| CI Validation       | `.github/workflows/rpi-validate.yml`                | Automated artifact structure checks                 |
 | Phase Artifacts     | `.rpi/projects/<project-id>/research.md`, `plan.md` | Research and planning outputs                       |
-| Documentation       | `.rpi/docs/*.md`                           | RPI methodology reference                           |
+| Documentation       | `.rpi/docs/*.md`                                    | RPI methodology reference                           |
 
 ## Using Prompt Files
 
@@ -44,28 +44,34 @@ Prompt files provide templates for invoking each phase:
 **Research Phase:**
 ```bash
 # Read the prompt template
-cat .github/prompts/research.prompt.md
+cat .github/prompts/rpikit.research.prompt.md
 
-# Use with GitHub Copilot Chat or command-line agent
-# Example: "Start Research phase for [problem statement]"
+# In VS Code Copilot Chat, invoke as:
+# /rpikit.research
 ```
 
 **Plan Phase:**
 ```bash
 # After research.md is validated
-cat .github/prompts/plan.prompt.md
+cat .github/prompts/rpikit.plan.prompt.md
 
 # Provide path to research.md as input
 # Example: "Input: .rpi/projects/0001-my-project/research.md"
+
+# In VS Code Copilot Chat, invoke as:
+# /rpikit.plan
 ```
 
 **Implement Phase:**
 ```bash
 # After plan.md is validated and signed off
-cat .github/prompts/implement.prompt.md
+cat .github/prompts/rpikit.implement.prompt.md
 
 # Provide path to plan.md as input
 # Example: "Input: .rpi/projects/0001-my-project/plan.md"
+
+# In VS Code Copilot Chat, invoke as:
+# /rpikit.implement
 ```
 
 ## Phase Transitions
