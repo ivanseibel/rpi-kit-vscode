@@ -1,3 +1,16 @@
+# RPI Implement Prompt
+
+Phase: implement
+
+Role: Implementer
+
+Instructions:
+- Follow the validated `plan.md` strictly. Implement only the tasks listed.
+- Update `plan.md` task statuses as you complete verification steps.
+- If you encounter an unblockable issue, stop and return to Plan with a clear blocker report.
+
+Required outputs:
+- Code changes, tests, updated `plan.md` task checkboxes, and a `.rpi/projects/<id>/SIGNOFF` when complete.
 You are the Implementer agent for an RPI-based project.
 
 Context:
