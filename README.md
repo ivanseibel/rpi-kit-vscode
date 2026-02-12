@@ -6,6 +6,20 @@ This folder packages the RPI workflow artifacts so they can be copied into anoth
 
 - Kit root: rpi-kit (copyable folder)
 
+## How the RPI Workflow Is Implemented
+
+This kit implements the RPI workflow primarily through **GitHub Copilot customization** (custom instructions, prompt entry points, and skills), backed by repo-local governance docs and CI validation.
+
+What gets installed and how it works:
+
+- **Global Copilot custom instructions:** `.github/copilot-instructions.md` provides the RPI constitution and the high-level “Research → Plan → Implement” rules.
+- **Scoped instruction files (phase constraints):** `.github/instructions/*.instructions.md` uses `applyTo:` to enforce stricter rules for specific artifacts (for example, `.rpi/projects/**/research.md` and `.rpi/projects/**/plan.md`).
+- **Prompt entry points:** `.github/prompts/rpikit.{research,plan,implement}.prompt.md` gives you `/rpikit.research`, `/rpikit.plan`, and `/rpikit.implement` in Copilot Chat as a consistent way to start each phase.
+- **Copilot skills:** `.github/skills/**/SKILL.md` packages reusable “how to do X” playbooks that Copilot can load alongside instructions (for example, `rpi-workflow` for templates/validation guidance, plus any project-specific skills you want to ship with the kit).
+- **VS Code wiring:** `.vscode/settings.json` enables instruction file loading (`github.copilot.chat.codeGeneration.useInstructionFiles`).
+- **Governance + artifacts:** `AGENTS.md` (and `.rpi/AGENTS.md`) defines roles, handoffs, and recursion rules; `.rpi/` holds docs, example projects, and helper scripts.
+- **Validation automation:** `.github/workflows/rpi-validate.yml` checks that the required files and structure exist (instructions, prompts, skills, docs, governance) so the workflow remains consistent over time.
+
 ## Install
 
 ```bash
