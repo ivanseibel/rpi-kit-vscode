@@ -122,6 +122,18 @@ git push
 ./.rpi/scripts/check-vscode-load.sh
 ```
 
+## Local-Only Scaffold Worktrees
+
+If you want Copilot scaffold files available locally without committing them, use the root README section:
+
+- `./README.md` (`Local-Only Worktree Setup`)
+
+Helper script:
+
+```bash
+./.rpi/scripts/rpi-worktree-copilot.sh --help
+```
+
 ## VS Code Load Checks
 
 Verify that VS Code has loaded custom instructions and skills:

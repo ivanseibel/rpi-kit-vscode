@@ -34,9 +34,10 @@ This inventory enumerates the required RPI workflow artifacts and their dependen
 
 - .rpi/docs/
 
-## Helper Script
+## Helper Scripts
 
 - .rpi/scripts/check-vscode-load.sh
+- .rpi/scripts/rpi-worktree-copilot.sh
 
 ## RPI Projects
 

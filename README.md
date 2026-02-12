@@ -111,3 +111,203 @@ During install, only the RPI section is written to the target file. Project-spec
 - The installer only copies the RPI kit artifacts and referenced dependencies.
 - The kit includes validation workflow, instructions, prompts, skills, and RPI docs.
 - The kit repository may contain example RPI projects under `.rpi/projects/`, but the installer intentionally does **not** copy anything under `.rpi/projects/` into target repositories.
+
+## Local-Only Worktree Setup
+
+This workflow installs Copilot scaffold files into a dedicated Git worktree without committing scaffold artifacts to the target repository.
+
+### Problem and Goal
+
+When you want RPI Copilot workflow support for a project, scaffold files are needed on disk (`.github/`, `.rpi/`, `.vscode/`, `AGENTS.md`). In some setups, you do not want those files committed or pushed.
+
+Goal:
+
+- Install scaffold files only in a dedicated local worktree.
+- Keep those files out of commits by default.
+- Block accidental commits even if files are force-added.
+
+### Two Supported Flows
+
+Use the helper script:
+
+`./.rpi/scripts/rpi-worktree-copilot.sh`
+
+#### Flow A: Create a New Scaffold Worktree
+
+```bash
+./.rpi/scripts/rpi-worktree-copilot.sh \
+  --project /path/to/target-project \
+  --worktree /path/to/target-project-rpi-copilot \
+  --create-worktree \
+  --ref HEAD \
+  --mode skip
+```
+
+#### Flow B: Apply Scaffold to an Existing Worktree
+
+```bash
+./.rpi/scripts/rpi-worktree-copilot.sh \
+  --project /path/to/target-project \
+  --worktree /path/to/existing-worktree \
+  --no-create-worktree \
+  --mode skip
+```
+
+Dry-run is supported in both flows:
+
+```bash
+./.rpi/scripts/rpi-worktree-copilot.sh \
+  --project /path/to/target-project \
+  --worktree /path/to/target-project-rpi-copilot \
+  --create-worktree \
+  --dry-run
+```
+
+### Safety Model
+
+The script enforces local-only safety in two layers.
+
+1. Worktree-local ignore rules:
+   - It writes scaffold path rules into a local file at worktree root:
+   - `.gitignore.rpi-local`
+   - It sets worktree-local config:
+   - `git config --worktree core.excludesFile <worktree>/.gitignore.rpi-local`
+2. Worktree-local pre-commit guard:
+   - It creates `.githooks/pre-commit` in the target worktree.
+   - It configures `core.hooksPath` only for that worktree:
+   - `git config --worktree core.hooksPath .githooks`
+
+The pre-commit hook blocks commits if staged files match scaffold paths and prints unstaging guidance (`git restore --staged <path>`).
+
+### Script Flags
+
+- `--project <path>` required  
+  Path to the main target repository that owns the worktree list. The script uses this repo to create/validate worktrees.
+- `--worktree <path>` required  
+  Directory where scaffold files are installed and local safety controls are configured.
+- `--create-worktree` optional (default)  
+  Tells the script to run `git worktree add` first, then install scaffold into the new worktree.
+- `--no-create-worktree` optional  
+  Skip creation and use an already-existing worktree. Use this for retrofitting safety/config onto a worktree you already have.
+- `--ref <git-ref>` optional (default `HEAD`)  
+  Git ref used only when creating a new worktree (branch, tag, or commit).
+- `--mode <skip|overwrite|prompt>` optional (default `skip`)  
+  Passed to `install.js` to control conflict behavior:
+  - `skip`: keep existing files untouched (safest default)
+  - `overwrite`: replace existing files
+  - `prompt`: ask per conflict (interactive)
+- `--dry-run` optional  
+  Shows what would be installed/configured without writing files or Git config changes.
+- `--kit <path>` optional  
+  Path to this kit repository root (where `install.js` lives). Use when running the script from a copied location or wrapper.
+
+### Flag Combination Examples
+
+Create a new worktree from current `HEAD` with safe defaults:
+
+```bash
+./.rpi/scripts/rpi-worktree-copilot.sh \
+  --project /path/to/project \
+  --worktree /path/to/project-rpi-copilot \
+  --create-worktree
+```
+
+Create a new worktree from a specific branch and prompt on installer conflicts:
+
+```bash
+./.rpi/scripts/rpi-worktree-copilot.sh \
+  --project /path/to/project \
+  --worktree /path/to/project-rpi-copilot \
+  --create-worktree \
+  --ref main \
+  --mode prompt
+```
+
+Apply scaffold and safety setup to an existing worktree:
+
+```bash
+./.rpi/scripts/rpi-worktree-copilot.sh \
+  --project /path/to/project \
+  --worktree /path/to/existing-worktree \
+  --no-create-worktree \
+  --mode skip
+```
+
+Preview actions without mutating anything:
+
+```bash
+./.rpi/scripts/rpi-worktree-copilot.sh \
+  --project /path/to/project \
+  --worktree /path/to/project-rpi-copilot \
+  --create-worktree \
+  --dry-run
+```
+
+Run from outside the kit repo by setting an explicit kit path:
+
+```bash
+/path/to/rpi-kit-vscode/.rpi/scripts/rpi-worktree-copilot.sh \
+  --project /path/to/project \
+  --worktree /path/to/project-rpi-copilot \
+  --create-worktree \
+  --kit /path/to/rpi-kit-vscode
+```
+
+### Verification Checklist
+
+Run these checks in the scaffold worktree:
+
+1. Scaffold files are hidden from status:
+   - `git status --short`
+2. Force-add and confirm commit is blocked:
+   - `git add -f .github/copilot-instructions.md`
+   - `git commit -m "test guard"`
+3. Confirm normal file commits still work:
+   - stage and commit a non-scaffold file from the target project.
+
+### Troubleshooting
+
+#### Worktree path is rejected in existing-worktree mode
+
+- Ensure `--worktree` is already registered under:
+  - `git -C /path/to/target-project worktree list --porcelain`
+
+#### Tracked conflict error appears
+
+- The script fails if scaffold paths are already tracked in the target project worktree.
+- Local exclude rules cannot hide tracked files.
+- Resolution: skip/install selectively or use a different repo/workflow where scaffold paths are untracked.
+
+#### Hook did not run
+
+- Check worktree-local hook config:
+  - `git -C /path/to/worktree config --worktree --get core.hooksPath`
+- Confirm `.githooks/pre-commit` is executable.
+
+#### Scaffold files still appear in status
+
+- Check worktree-local ignore config:
+  - `git -C /path/to/worktree config --worktree --get core.excludesFile`
+- Ensure `.gitignore.rpi-local` exists in the worktree and includes scaffold paths.
+
+### Codex Adaptation Template
+
+Apply the same mechanism in the Codex kit repository:
+
+1. Install Codex scaffold into a dedicated worktree (`--target <worktree>`).
+2. Write worktree-local excludes to a local ignore file and bind it with `core.excludesFile`.
+3. Configure worktree-local `core.hooksPath` with a pre-commit guard.
+
+Replace the Copilot scaffold path list with the Codex-specific list from the Codex kit `INVENTORY.md` before implementation.
+
+Likely Codex prefixes to validate:
+
+- `/.agents/skills/`
+- `/AGENTS.md`
+- `/.rpi/AGENTS.md`
+- `/.rpi/docs/`
+- `/.github/workflows/rpi-validate.yml`
+
+Important:
+
+- If any scaffold path is already tracked in the target repo, this local-only approach cannot prevent tracked-file diffs from appearing.
