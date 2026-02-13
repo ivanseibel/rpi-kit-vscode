@@ -311,3 +311,4 @@ Likely Codex prefixes to validate:
 Important:
 
 - If any scaffold path is already tracked in the target repo, this local-only approach cannot prevent tracked-file diffs from appearing.
+
