@@ -12,6 +12,7 @@ description: Research phase constraints for RPI workflow - enforces read-only di
 - **Must:** Validate research output against FAR criteria (Factual, Actionable, Relevant) before completing.
 - **Must:** Document all unknowns explicitly in a "Notes on Unknowns" section.
 - **Must:** Use `.github/skills/rpi-workflow/resources/research-template.md` as the starting structure.
+- **Must not:** Write to a project directory that already contains artifacts from a previous session. If `research.md` already exists at the target path, stop immediately, report the conflict to the operator, and do not proceed without explicit operator authorization (`reuse project <project-id>` or `continue project <project-id>`).
 
 ## Expected Output
 

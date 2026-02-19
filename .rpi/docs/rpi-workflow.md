@@ -24,6 +24,21 @@ Note: There is no automatic hook to create project directories; running the scaf
 
 Note: The kit repository itself may contain example projects under `.rpi/projects/`, but the installer intentionally excludes `.rpi/projects/**` when copying into target repositories.
 
+### Starting a New Session
+
+> **Always create a new project folder for each session.** Do not reuse a previous folder unless you explicitly intend to continue that specific earlier project.
+
+**Rules for agents and operators:**
+
+1. Run the scaffolder at the start of each new Research session — it generates a fresh `yyyymmdd-<slug>/` folder.
+2. Before writing any artifact, scan `.rpi/projects/` for folders with a similar slug.
+3. If a related folder is found, **stop and report** it to the operator (folder name, artifact state, `SIGNOFF` presence). Do not write anything.
+4. Reuse of an existing folder requires the operator to say explicitly:
+   - `reuse project <project-id>` — to continue an in-progress project from an earlier session, or
+   - `continue project <project-id>` — equivalent form.
+5. Without that explicit instruction, always treat the incoming request as a **new** project and direct the operator to run the scaffolder.
+6. **A SIGNOFF'd project is finished.** Reopen it only on explicit operator request; never auto-reuse a completed project.
+
 ## Artifact Locations
 
 All RPI artifacts are repository-backed and version controlled:

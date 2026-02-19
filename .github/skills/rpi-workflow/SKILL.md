@@ -65,6 +65,29 @@ bash .github/skills/rpi-workflow/scripts/rpi-new.sh "Project Title"
 bash .github/skills/rpi-workflow/scripts/rpi-new.sh "Authentication Refactor"
 ```
 
+## Project Reuse Policy
+
+> **Every session starts with a new project folder.** Never reuse an existing `.rpi/projects/` folder unless the operator explicitly authorizes it.
+
+### Rules
+
+1. **Pre-flight scan:** Before writing any artifact, list `.rpi/projects/` and check for folders with a similar slug.
+2. **Match found — stop and report:** If a potentially related folder is found, report:
+   - Folder name and date prefix
+   - Which artifacts exist (`research.md`, `plan.md`, `SIGNOFF`)
+   - Whether the project is finalized (has `SIGNOFF`)
+   Then **stop and wait** for operator instruction.
+3. **Reuse requires explicit authorization:** The operator must say `reuse project <project-id>` or `continue project <project-id>`. Vague similarity is never enough.
+4. **Fresh start:** If the operator wants a new session on the same topic, direct them to run the scaffolder to create a new dated folder. Do not write to the old folder.
+5. **Never overwrite silently:** Even when reuse is authorized, do not overwrite an artifact without stating which file will be modified and receiving confirmation.
+
+### When Reuse Is Authorized
+
+If the operator explicitly says to reuse a project:
+- Confirm which artifacts may be modified (e.g., "updating `plan.md` only").
+- Read the existing artifacts first before writing.
+- Preserve any content the operator has not asked to change.
+
 ## Resources
 
 - [Research Template](resources/research-template.md) - Boilerplate structure for research.md files.

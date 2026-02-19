@@ -12,6 +12,7 @@ description: Plan phase constraints for RPI workflow - enforces atomic task deco
 - **Must:** Validate plan output against FACTS criteria (Feasible, Atomic, Clear, Testable, Scoped) before completing.
 - **Must:** Include pass/fail criteria for every verification step.
 - **Must:** Use `.github/skills/rpi-workflow/resources/plan-template.md` as the starting structure.
+- **Must not:** Overwrite an existing `plan.md`. If `plan.md` already exists at the target path, stop immediately, report the conflict to the operator, and do not proceed without explicit operator authorization (`reuse project <project-id>` or `continue project <project-id>`).
 
 ## Expected Output
 
